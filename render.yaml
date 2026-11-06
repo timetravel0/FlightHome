@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: flighthome
+    runtime: python
+    plan: starter
+    buildCommand: "pip install --no-cache-dir -r requirements.txt"
+    startCommand: "python app.py --mappa --intervallo 30 --storico-intervallo 60 --giorni-storico 30"
+    healthCheckPath: /health
+    disk:
+      name: flighthome-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: FLIGHTHOME_NO_BROWSER
+        value: "1"
+      - key: FLIGHTHOME_DATABASE
+        value: /var/data/flighthome.sqlite3
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: FLIGHTHOME_LAT
+        sync: false
+      - key: FLIGHTHOME_LON
+        sync: false
+      - key: OPENSKY_CLIENT_ID
+        sync: false
+      - key: OPENSKY_CLIENT_SECRET
+        sync: false
